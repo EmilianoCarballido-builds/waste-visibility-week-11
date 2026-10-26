@@ -1,0 +1,14 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import {readings,fitTrend,warning,classify,matchOffers,validateEntry,summarize} from '../public/core.mjs';
+const now=1792989000000;
+test('known declining observations fit -6 points/hour and clamp at zero',()=>{const m=fitTrend(readings('declining',now),now);assert.equal(m.slope,-6);assert.equal(m.prediction,0);assert.equal(m.rmse,0);});
+test('stable observations do not invent rapid depletion',()=>{const m=fitTrend(readings('stable',now),now);assert.ok(Math.abs(m.slope)<.1);assert.ok(m.prediction>60&&m.prediction<62);});
+test('stale sensor and recent refill suppress trend',()=>{for(const key of ['stale','refill'])assert.equal(fitTrend(readings(key,now),now).ok,false);});
+test('insufficient and invalid readings suppress trend',()=>{assert.equal(fitTrend([],now).ok,false);assert.equal(fitTrend([{level:NaN,time:now}],now).ok,false);});
+test('critical threshold includes exactly 20 percent',()=>{assert.equal(warning([{time:now,level:20}],now),true);assert.equal(warning([{time:now,level:21}],now),false);});
+test('independent reference identifies missed warning and false alarm',()=>{assert.equal(classify(15,false).missed,true);assert.equal(classify(50,true).falseAlarm,true);assert.equal(classify(20,true).missed,false);});
+test('marketplace matching excludes unavailable and unaffordable resources',()=>{assert.deepEqual(matchOffers(0,true),[]);assert.deepEqual(matchOffers(150,true).map(x=>x.id),['refill']);assert.ok(matchOffers(1000).every(o=>o.available));assert.deepEqual(matchOffers(-1),[]);});
+const row={house:'H01',condition:'manual',reference:'30',alerted:'no',useful:'yes',checking:'3',support:'2',disruption:'no',supply:'same'};
+test('log accepts bounds and rejects ranges or unrecognized choices',()=>{assert.equal(validateEntry({...row,reference:'0'}).reference,0);assert.equal(validateEntry({...row,reference:'100'}).reference,100);for(const value of ['-1','101','abc','Infinity'])assert.throws(()=>validateEntry({...row,reference:value}));assert.throws(()=>validateEntry({...row,house:'actual name'}));});
+test('comparison separates conditions and sums useful actions, burden and errors',()=>{const rows=[validateEntry(row),validateEntry({...row,condition:'digital',reference:'10',supply:'changed'})];assert.deepEqual(summarize(rows,'manual'),{n:1,useful:1,minutes:5,low:0,missed:0,falseAlarm:0,disruptions:0,supplyChanges:0});assert.equal(summarize(rows,'digital').missed,1);assert.equal(summarize(rows,'digital').supplyChanges,1);});
