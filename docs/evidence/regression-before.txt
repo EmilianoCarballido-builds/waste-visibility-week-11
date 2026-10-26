@@ -1,0 +1,38 @@
+✔ known declining observations fit -6 points/hour and clamp at zero (0.993125ms)
+✔ stable observations do not invent rapid depletion (0.6705ms)
+✔ stale sensor and recent refill suppress trend (0.061833ms)
+✔ insufficient and invalid readings suppress trend (0.045542ms)
+✔ critical threshold includes exactly 20 percent (0.058834ms)
+✔ independent reference identifies missed warning and false alarm (0.047583ms)
+✔ marketplace matching excludes unavailable and unaffordable resources (0.832792ms)
+✔ log accepts bounds and rejects ranges or unrecognized choices (0.225041ms)
+✔ comparison separates conditions and sums useful actions, burden and errors (0.147916ms)
+✖ required numeric values reject empty or whitespace instead of treating absence as zero (0.508375ms)
+ℹ tests 10
+ℹ suites 0
+ℹ pass 9
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 49.550167
+
+✖ failing tests:
+
+test at work/repo/tests/core.test.mjs:15:1
+✖ required numeric values reject empty or whitespace instead of treating absence as zero (0.508375ms)
+  AssertionError [ERR_ASSERTION]: Missing expected exception.
+      at TestContext.<anonymous> (file:///Users/emilianocarballido/Documents/Codex/2026-10-25/referenced-chatgpt-conversation-this-is-an-2/work/repo/tests/core.test.mjs:15:195)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: undefined,
+    operator: 'throws',
+    diff: 'simple'
+  }

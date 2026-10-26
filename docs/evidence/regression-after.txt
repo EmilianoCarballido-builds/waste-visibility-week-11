@@ -1,0 +1,18 @@
+✔ known declining observations fit -6 points/hour and clamp at zero (0.796875ms)
+✔ stable observations do not invent rapid depletion (0.356375ms)
+✔ stale sensor and recent refill suppress trend (0.053166ms)
+✔ insufficient and invalid readings suppress trend (0.044083ms)
+✔ critical threshold includes exactly 20 percent (0.054208ms)
+✔ independent reference identifies missed warning and false alarm (0.045667ms)
+✔ marketplace matching excludes unavailable and unaffordable resources (0.460208ms)
+✔ log accepts bounds and rejects ranges or unrecognized choices (0.175041ms)
+✔ comparison separates conditions and sums useful actions, burden and errors (0.12125ms)
+✔ required numeric values reject empty or whitespace instead of treating absence as zero (0.149708ms)
+ℹ tests 10
+ℹ suites 0
+ℹ pass 10
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 47.173

@@ -43,6 +43,7 @@ export function validateEntry(raw) {
   for(const [k,v] of Object.entries(allowed)) if(!v.includes(raw[k])) throw Error('Selecciona una opción válida: '+k);
   const result={...raw};
   for(const [key,max] of [['reference',100],['checking',240],['support',240]]) {
+    if(raw[key]===null || raw[key]===undefined || (typeof raw[key]!=='string'&&typeof raw[key]!=='number') || String(raw[key]).trim()==='') throw Error('Completa el campo '+key+'; si no hubo tiempo, escribe 0.');
     const value=Number(raw[key]);
     if(!Number.isFinite(value)||value<0||value>max) throw Error('Revisa el valor de '+key+' (0–'+max+').');
     result[key]=value;
